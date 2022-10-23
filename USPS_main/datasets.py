@@ -1,6 +1,7 @@
 import numpy as np
 
 
+
 def load_mnist():
     # the data, shuffled and split between train and test sets
     from tensorflow.keras.datasets import mnist
