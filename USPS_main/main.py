@@ -11,6 +11,7 @@ from tensorflow.keras.optimizers import SGD, Adam
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
+
 def _get_data_and_model(args):
     # prepare dataset
     x, y = load_data(args.dataset)
