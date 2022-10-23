@@ -11,6 +11,7 @@ from tensorflow.keras.models import Model
 from FcDEC import FcDEC
 
 
+
 class FcIDEC(FcDEC):
     def __init__(self, dims, n_clusters=10, alpha=1.0):
         super(FcIDEC, self).__init__(dims, n_clusters, alpha)
