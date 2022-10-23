@@ -3,6 +3,7 @@ from tensorflow.keras.layers import Layer, InputSpec, Input, Dense, Lambda
 from tensorflow.keras.models import Model
 from tensorflow.keras.initializers import VarianceScaling
 
+
 def cosine_distance(vests):
     x, y = vests
     x = K.l2_normalize(x, axis=-1)
