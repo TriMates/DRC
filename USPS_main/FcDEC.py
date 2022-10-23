@@ -20,6 +20,7 @@ from sklearn.cluster import KMeans
 import metrics
 
 
+
 def autoencoder(dims, act='relu'):
     """
     Fully connected auto-encoder model, symmetric.
