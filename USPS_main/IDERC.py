@@ -26,6 +26,7 @@ from sklearn.cluster import KMeans
 
 import os
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
+
 def autoencoder(dims, act='relu'):
     """
     Fully connected auto-encoder model, symmetric.
