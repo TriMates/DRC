@@ -1,12 +1,3 @@
-"""
-Tensorflow Implementation for Improved Deep Embedded Clustering FcIDEC and FcIDEC-DA:
-    - Xifeng Guo, Long Gao, Xinwang Liu, Jianping Yin. Improved Deep Embedded Clustering with Local Structure Preservation. IJCAI 2017.
-    - Xifeng Guo, En Zhu, Xinwang Liu, and Jianping Yin. Deep Embedded Clustering with Data Augmentation. ACML 2018.
-
-Author:
-    Xifeng Guo. 2018.6.30
-"""
-
 from tensorflow.keras.models import Model
 from FcDEC import FcDEC
 
@@ -18,7 +9,7 @@ class FcIDEC(FcDEC):
         self.model = Model(inputs=self.autoencoder.input,
                            outputs=[self.model.output, self.autoencoder.output])
 
-    def predict(self, x):  # predict cluster labels using the output of clustering layer
+    def predict(self, x):  
         q = self.model.predict(x, verbose=0)[0]
         return q
 
