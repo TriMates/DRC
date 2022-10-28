@@ -131,16 +131,16 @@ class FcDEC(object):
             print('Using augmentation for ae')
             print('-=*'*20)
             def gen(x, batch_size):
-                if len(x.shape) > 2:  # image
+                if len(x.shape) > 2: 
                     gen0 = self.datagen.flow(x, shuffle=True, batch_size=batch_size)
                     while True:
                         batch_x = gen0.next()
                         yield (batch_x, batch_x)
                 else:
                     width = int(np.sqrt(x.shape[-1]))
-                    if width * width == x.shape[-1]:  # gray
+                    if width * width == x.shape[-1]:  
                         im_shape = [-1, width, width, 1]
-                    else:  # RGB
+                    else:  
                         width = int(np.sqrt(x.shape[-1] / 3.0))
                         im_shape = [-1, width, width, 3]
                     gen0 = self.datagen.flow(np.reshape(x, im_shape), shuffle=True, batch_size=batch_size)
@@ -198,7 +198,7 @@ class FcDEC(object):
             update_interval=140, save_dir='./results/temp', aug_cluster=False):
         print('Begin clustering:', '-' * 60)
         print('Update interval', update_interval)
-        save_interval = int(maxiter)  # only save the initial and final model
+        save_interval = int(maxiter)  
         print('Save interval', save_interval)
 
         t1 = time()
@@ -222,8 +222,8 @@ class FcDEC(object):
         for ite in range(int(maxiter)):
             if ite % update_interval == 0:
                 q = self.predict(x)
-                p = self.target_distribution(q)  # update the auxiliary target distribution p
-                # evaluate the clustering performance
+                p = self.target_distribution(q)   
+                
                 y_pred = q.argmax(1)
                 avg_loss = loss / update_interval
                 loss = 0.
@@ -248,7 +248,7 @@ class FcDEC(object):
                 print('saving model to:', save_dir + '/model_' + str(ite) + '.h5')
                 self.model.save_weights(save_dir + '/model_' + str(ite) + '.h5')
 
-            # train on batch
+            
             idx = index_array[index * batch_size: min((index+1) * batch_size, x.shape[0])]
             x_batch = self.random_transform(x[idx]) if aug_cluster else x[idx]
             loss += self.train_on_batch(x=x_batch, y=p[idx])
@@ -256,7 +256,6 @@ class FcDEC(object):
 
             ite += 1
 
-        # save the trained model
         logfile.close()
         print('saving model to:', save_dir + '/model_final.h5')
         self.model.save_weights(save_dir + '/model_final.h5')
