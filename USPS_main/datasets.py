@@ -3,7 +3,7 @@ import numpy as np
 
 
 def load_mnist():
-    # the data, shuffled and split between train and test sets
+
     from tensorflow.keras.datasets import mnist
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
     x = np.concatenate((x_train, x_test))
@@ -14,7 +14,7 @@ def load_mnist():
 
 
 def load_mnist_test():
-    # the data, shuffled and split between train and test sets
+
     from tensorflow.keras.datasets import mnist
     _, (x, y) = mnist.load_data()
     x = x.reshape([-1, 28, 28, 1]) / 255.0
@@ -23,7 +23,7 @@ def load_mnist_test():
 
 
 def load_fashion_mnist():
-    from tensorflow.keras.datasets import fashion_mnist   # this requires keras>=2.0.9
+    from tensorflow.keras.datasets import fashion_mnist  
     (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
     x = np.concatenate((x_train, x_test))
     y = np.concatenate((y_train, y_test))
