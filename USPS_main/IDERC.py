@@ -26,7 +26,7 @@ def autoencoder(dims, act='relu'):
         h = Dense(dims[i + 1], activation=act, kernel_initializer=init, name='encoder_%d' % i)(h)
 
 
-    h = Dense(dims[-1], kernel_initializer=init, name='encoder_%d' % (n_stacks - 1))(h)  # hidden layer, features are extracted from here
+    h = Dense(dims[-1], kernel_initializer=init, name='encoder_%d' % (n_stacks - 1))(h)  
 
     y = h
 
@@ -64,7 +64,7 @@ class IDERC(object):
 
 
         self.model = Model(inputs=self.autoencoder.input,
-                           outputs=[rc_layer, self.autoencoder.output], name='derc')   #  todo
+                           outputs=[rc_layer, self.autoencoder.output], name='derc')  
 
     def pretrain(self, x, y=None, x_test=None, y_test=None, optimizer='adam', epochs=200, batch_size=256,
                  save_dir='results/temp', verbose=1, aug_pretrain=False):
@@ -115,16 +115,16 @@ class IDERC(object):
             print('-=*' * 20)
 
             def gen(x, batch_size):
-                if len(x.shape) > 2:  # image
+                if len(x.shape) > 2: 
                     gen0 = self.datagen.flow(x, shuffle=True, batch_size=batch_size)
                     while True:
                         batch_x = gen0.next()
                         yield (batch_x, batch_x)
                 else:
                     width = int(np.sqrt(x.shape[-1]))
-                    if width * width == x.shape[-1]:  # gray
+                    if width * width == x.shape[-1]:  
                         im_shape = [-1, width, width, 1]
-                    else:  # RGB
+                    else:  
                         width = int(np.sqrt(x.shape[-1] / 3.0))
                         im_shape = [-1, width, width, 3]
                     gen0 = self.datagen.flow(np.reshape(x, im_shape), shuffle=True, batch_size=batch_size)
@@ -176,7 +176,7 @@ class IDERC(object):
 
 
         width = int(np.sqrt(x.shape[-1]))
-        if width * width == x.shape[-1]:  # gray
+        if width * width == x.shape[-1]: 
             im_shape = [-1, width, width, 1]
         else:  
             width = int(np.sqrt(x.shape[-1] / 3.0))
@@ -196,7 +196,7 @@ class IDERC(object):
         self.model.summary()
         print('Begin clustering:', '-' * 60)
         print('Update interval', update_interval)
-        save_interval = 7e4  # only save the initial and final model
+        save_interval = 7e4 
         print('Save interval', save_interval)
         t1 = time()
 
