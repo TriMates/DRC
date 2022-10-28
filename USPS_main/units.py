@@ -20,15 +20,15 @@ def build_encoder(dims, act='relu'):
     n_stacks = len(dims) - 1
     init = VarianceScaling(scale=1. / 3., mode='fan_in', distribution='uniform')
 
-    # input
+
     x = Input(shape=(dims[0],), name='encoder_input')
     h = x
 
-    # internal layers in encoder
+
     for i in range(n_stacks - 1):
         h = Dense(dims[i + 1], activation=act, kernel_initializer=init, name='encoder_%d' % i)(h)
 
-    # hidden layer
+
     h = Dense(dims[-1], kernel_initializer=init, name='encoder_%d' % (n_stacks - 1))(h)
 
     return Model(inputs=x, outputs=h, name='encoder')
@@ -41,11 +41,11 @@ def build_decoder(dims, act='relu'):
     x = Input(shape=(dims[-1],), name='encoder_input')
 
     y = x
-    # internal layers in decoder
+
     for i in range(n_stacks - 1, 0, -1):
         y = Dense(dims[i], activation=act, kernel_initializer=init, name='decoder_%d' % i)(y)
 
-    # output
+
     y = Dense(dims[0], kernel_initializer=init, name='decoder_0')(y)
 
     return Model(inputs=x, outputs=y, name='decoder')
@@ -190,20 +190,20 @@ def autoencoder(dims, act='relu'):
     n_stacks = len(dims) - 1
     init = VarianceScaling(scale=1. / 3., mode='fan_in', distribution='uniform')
 
-    # input
+
     in_a = Input(shape=(dims[0],), name='input_a')
     in_b = Input(shape=(dims[0],), name='input_b')
 
     h_a = in_a
     h_b = in_b
 
-    # internal layers in encoder
+
     for i in range(n_stacks-1):
         dense = Dense(dims[i + 1], activation=act, kernel_initializer=init, name='encoder_%d' % i)
         h_a = dense(h_a)
         h_b = dense(h_b)
 
-    # hidden layer
+
     dense = Dense(dims[-1], kernel_initializer=init, name='encoder_%d' % (n_stacks - 1))
     h_a = dense(h_a)
     h_b = dense(h_b)
@@ -213,13 +213,12 @@ def autoencoder(dims, act='relu'):
     y_a = h_a
     y_b = h_b
 
-    # internal layers in decoder
     for i in range(n_stacks-1, 0, -1):
         dense = Dense(dims[i], activation=act, kernel_initializer=init, name='decoder_%d' % i)
         y_a = dense(y_a)
         y_b = dense(y_b)
 
-    # output
+
     dense = Dense(dims[0], kernel_initializer=init, name='decoder_0')
     y_a = dense(y_a)
     y_b = dense(y_b)
