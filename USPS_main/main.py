@@ -13,19 +13,19 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 
 def _get_data_and_model(args):
-    # prepare dataset
+
     x, y = load_data(args.dataset)
     print(x.shape)
 
     n_clusters = len(np.unique(y))
 
-    # prepare optimizer
+
     if args.optimizer in ['sgd', 'SGD']:
         optimizer = SGD(args.lr, 0.9)
     else:
         optimizer = Adam()
 
-    # prepare the model
+
     if 'IDERC' in args.method:
         model = IDERC(dims=[x.shape[-1], 500, 500, 2000, 10], n_clusters=n_clusters)
         model.compile(optimizer=optimizer, loss=[self_bce, 'mse'], loss_weights=[args.rc_weight, args.rc_reco_or_weight])
@@ -33,7 +33,7 @@ def _get_data_and_model(args):
     else:
         raise ValueError("Invalid value for method, which can only be in ['IDERC', 'IDERC-DA', 'IDERC-Softmax', 'IDERC-Sigmoid']")
 
-    # if -DA method, we'll force aug_pretrain and aug_cluster is True
+
     if '-DA' in args.method:
         args.aug_cluster = True
 
@@ -41,7 +41,7 @@ def _get_data_and_model(args):
 
 
 def train(args):
-    # get data and model
+
     (x, y), model = _get_data_and_model(args)
     t0 = time()
     if not os.path.exists(args.save_dir):
@@ -50,7 +50,7 @@ def train(args):
         model.load_weights(args.weights)
     else:
         if args.get_dec_model:
-            # prepare the idec model
+
             n_clusters = len(np.unique(y))
 
             idec = FcIDEC(dims=[x.shape[-1], 500, 500, 2000, 10], n_clusters=n_clusters)
@@ -71,7 +71,7 @@ def train(args):
         t1 = time()
         print("Time for pretraining: %ds" % (t1 - t0))
 
-    # clustering
+
     y_pred = model.fit(x, y=y, maxiter=args.maxiter, batch_size=args.batch_size, update_interval=args.update_interval,
                        save_dir=args.save_dir, aug_cluster=args.aug_cluster)
     if y is not None:
@@ -105,7 +105,7 @@ def test(args):
 
 
 def tsne(args):
-    #  results/mnist/2/model_6020000.h5
+
     assert args.weights is not None
 
     import matplotlib
@@ -129,7 +129,7 @@ def tsne(args):
         feat = batch_x
     else:
         model.load_weights(args.weights)
-        # feat = model.predict(batch_x)
+
         feat = model.extract_features(batch_x)
     per = 30
     while per <= 50:
@@ -148,15 +148,14 @@ def tsne(args):
 
         plt.xticks([-100, 0, 100], size=16)
         plt.yticks([-100, 0, 100], size=16)
-        # ax.axes.get_yaxis().set_visible(False)
-        # ax.axes.get_xaxis().set_visible(False)
+
         plt.tight_layout()
         plt.show()
         fig.savefig(args.save_dir + '/tsne' + str(per) + '.png', dpi=1024)
 
 
 if __name__ == "__main__":
-    # setting the hyper parameters
+
     import argparse
 
     parser = argparse.ArgumentParser(description='main')
@@ -174,7 +173,7 @@ if __name__ == "__main__":
     parser.add_argument('--begin-weights', default='../DEC/results/mnist/model_final.h5', type=str,
                         help="Pretrained weights of the model")
 
-    # Parameters for pretraining
+
     parser.add_argument('--get-pretrain', action='store_false',
                         help="Whether to pretrain ae")
     parser.add_argument('--pretrained-optimizer', default='sgd', type=str,
@@ -196,7 +195,7 @@ if __name__ == "__main__":
     parser.add_argument('--pair-weight', default=1e-4, type=float,
                         help="Weight of pair loss")
 
-    # Parameters for clustering
+
     parser.add_argument('-t', '--testing', action='store',
                         help="Testing the clustering performance with provided weights")
     parser.add_argument('--get-tsneing', action='store_true',
@@ -243,7 +242,7 @@ if __name__ == "__main__":
     print(args)
     print('+' * 75)
 
-    # testing
+
     if args.testing:
         test(args)
     elif args.get_tsneing:
