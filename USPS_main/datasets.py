@@ -1,7 +1,5 @@
 import numpy as np
 
-
-
 def load_mnist():
 
     from tensorflow.keras.datasets import mnist
