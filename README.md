@@ -1,3 +1,3 @@
-# DRC
+# Deep Refinement Clustering
 
-This is the code of the paper "Deep Reinforcement Clustering" on USPS, and the rest will be published after the acceptance of the paper.
+This is the code of the paper "Deep Refinement Clustering" submited to IEEE TKDD, and the rest will be published after the acceptance of the paper.
